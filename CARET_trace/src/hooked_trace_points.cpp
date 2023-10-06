@@ -56,6 +56,7 @@ rmw_ret_t rmw_get_gid_for_publisher(const rmw_publisher_t * publisher, rmw_gid_t
 namespace CYCLONEDDS
 {
 void * DDS_WRITE_IMPL;
+void * DDS_WRITE_TS;
 }
 
 // For FastDDS
