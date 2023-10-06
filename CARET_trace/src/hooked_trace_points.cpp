@@ -206,6 +206,7 @@ void update_dds_function_addr()
     // clang-format on
   } else if (env_var == "rmw_cyclonedds_cpp") {
     CYCLONEDDS::DDS_WRITE_IMPL = lib->get_symbol("dds_write_impl");
+    CYCLONEDDS::DDS_WRITE_TS = lib->get_symbol("dds_write_ts");
   }
 }
 
@@ -232,6 +233,29 @@ int dds_write_impl(void * wr, void * data, long tstamp, int action)  // NOLINT
   }
   return dds_return;
 }
+
+// for cyclonedds
+// bind : &ros_message -> source_timestamp
+int dds_write_ts(void * writer, void * data, long timestamp)  // NOLINT
+{
+  static auto & context = Singleton<Context>::get_instance();
+  using functionT = int (*)(void *, void *, long);  // NOLINT
+
+  // clang-format on
+  if (CYCLONEDDS::DDS_WRITE_TS == nullptr) {
+    update_dds_function_addr();
+  }
+  int dds_return = ((functionT)CYCLONEDDS::DDS_WRITE_TS)(wr, data, timestamp);
+
+  if (context.is_recording_allowed() && trace_filter_is_rcl_publish_recorded) {
+    tracepoint(TRACEPOINT_PROVIDER, dds_bind_addr_to_stamp, data, timestamp);
+#ifdef DEBUG_OUTPUT
+    std::cerr << "dds_bind_addr_to_stamp," << data << "," << tstamp << std::endl;
+#endif
+  }
+  return dds_return;
+}
+
 
 // for fastdds
 // bind : &ros_message -> source_timestamp
