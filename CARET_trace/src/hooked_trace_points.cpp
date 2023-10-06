@@ -246,7 +246,7 @@ int dds_write_ts(void * writer, void * data, long timestamp)  // NOLINT
   if (CYCLONEDDS::DDS_WRITE_TS == nullptr) {
     update_dds_function_addr();
   }
-  int dds_return = ((functionT)CYCLONEDDS::DDS_WRITE_TS)(wr, data, timestamp);
+  int dds_return = ((functionT)CYCLONEDDS::DDS_WRITE_TS)(writer, data, timestamp);
 
   if (context.is_recording_allowed() && trace_filter_is_rcl_publish_recorded) {
     tracepoint(TRACEPOINT_PROVIDER, dds_bind_addr_to_stamp, data, timestamp);
