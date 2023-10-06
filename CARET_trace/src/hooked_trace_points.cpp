@@ -206,6 +206,7 @@ void update_dds_function_addr()
       "_ZN8eprosima8fastrtps4rtps13WriterHistory13set_fragmentsEPNS1_13CacheChange_tE");  // NOLINT
     // clang-format on
   } else if (env_var == "rmw_cyclonedds_cpp") {
+    std::cout << "rmw_impl" << std::endl;
     CYCLONEDDS::DDS_WRITE_IMPL = lib->get_symbol("dds_write_impl");
     CYCLONEDDS::DDS_WRITE_TS = lib->get_symbol("dds_write_ts");
   }
