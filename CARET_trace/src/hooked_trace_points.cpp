@@ -248,12 +248,12 @@ int dds_write_ts(void * writer, void * data, long timestamp)  // NOLINT
   }
   int dds_return = ((functionT)CYCLONEDDS::DDS_WRITE_TS)(writer, data, timestamp);
 
-  if (context.is_recording_allowed() && trace_filter_is_rcl_publish_recorded) {
+  // if (context.is_recording_allowed() && trace_filter_is_rcl_publish_recorded) {
     tracepoint(TRACEPOINT_PROVIDER, dds_bind_addr_to_stamp, data, timestamp);
 #ifdef DEBUG_OUTPUT
     std::cerr << "dds_bind_addr_to_stamp," << data << "," << tstamp << std::endl;
 #endif
-  }
+  // }
   return dds_return;
 }
 
